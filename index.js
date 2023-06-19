@@ -7,7 +7,6 @@ const getFileSize = require('getfilesize');
 const format = require("string-template");
 const ffmpeg = require('fluent-ffmpeg');
 
-ffmpeg.setFfmpegPath(path.join(__dirname, 'ffmpeg', 'ffmpeg.exe'));
 const bot = new TelegramBot(process.env.BOT_TOKEN, {polling: true});
 const DOWNLOAD_DIR_PATH = path.join(__dirname, 'downloads');
 const PARSE_MODE = {parse_mode: 'HTML'};
@@ -15,7 +14,7 @@ const PARSE_MODE = {parse_mode: 'HTML'};
 bot.on('message', (userMessageData) => {
     try {
         const chatId = userMessageData.chat.id;
-        const message = userMessageData.text;
+        let message = userMessageData.text;
 
         if (message === '/start')
             bot.sendMessage(chatId, format(process.env.MESSAGE_HELLO), PARSE_MODE);
@@ -27,7 +26,7 @@ bot.on('message', (userMessageData) => {
     }
 });
 
-function parseMessageAndSendVideo(chatId, message) {
+async function parseMessageAndSendVideo(chatId, message) {
     const {caption, url, fileNameWithExt, fileExt} = parseUserMessage(message);
 
     const resultFileNameWithExt = `${caption}.${fileExt}`;
@@ -90,7 +89,7 @@ function convertOrJustSendVideo(chatId, resultFileNameWithExt, resultConvertFile
 function sendVideoToChat(chatId, filePath, filename, caption) {
     canSendFileAsVideo(filePath)
         ? bot.sendVideo(chatId, filePath, {caption}, {filename})
-        : bot.sendDocument(chatId, filePath, {caption}, {filename});
+        : bot.sendDocument(chatId, filePath, {caption}, {filename})
 }
 
 function canSendFileAsVideo(filePath) {

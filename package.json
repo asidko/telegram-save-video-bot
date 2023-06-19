@@ -15,7 +15,7 @@
     "fs": "0.0.1-security",
     "getfilesize": "^1.1.0",
     "install": "^0.12.2",
-    "node-telegram-bot-api": "^0.30.0",
+    "node-telegram-bot-api": "^0.61.0",
     "npm": "^6.8.0",
     "path": "^0.12.7",
     "string-template": "^1.0.0"
